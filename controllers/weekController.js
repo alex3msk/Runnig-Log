@@ -17,7 +17,7 @@ const weeklystat = async (req, res, next) => {
     // get first and last days of the week and verify date
     let dates = getWeekDates(week);
     if ( !dates ) {
-        return next(new HttpError("No Run records found", 404)); 
+        return next(new HttpError("Not valid date format. Use 'YYYYWW' format.", 404)); 
     }
     // get current week stats
     const week_stat = await dbGetStat(dates.lastDay, PERIOD_WEEK); // (cur_date);

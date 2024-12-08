@@ -73,6 +73,8 @@ You can run the application in two ways:
 API interface - CRUD operations for:
 * `/api/users/` - Users
 * `/api/workouts/` - Workouts
+* `/api/week/` - Workout statistics for a given week of the year.
+* `/api/month/` - Workout statistics for a given week of the year.
 * Starts - TODO
 * `/api/shoes/` - Running shoes statistics
 Follow detailed API documentation at `/api/docs/` for more details.

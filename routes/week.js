@@ -6,16 +6,16 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/week/{id}:
+ * /api/week/:
  *   get:
  *     summary: Get workout statistics for a given week
  *     tags: [Week]
  *     parameters:
- *       - name: date
+ *       - name: week
  *         in: path
  *         required: true
  *         schema:
- *           type: string
+ *           type: string "YYYYWW"
  *     responses:
  *       200:
  *         description: Total week workouts statistics

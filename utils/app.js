@@ -16,6 +16,7 @@ const shoesRouter = require("../routes/shoes");
 const weightsRouter = require("../routes/weights");
 const workoutsRouter = require("../routes/workouts");
 const weekRouter = require("../routes/week");
+const monthRouter = require("../routes/month");
 
 const homeRouter = require('../routes/home');
 
@@ -58,6 +59,7 @@ app.use("/api/shoes", shoesRouter);
 app.use("/api/weights", weightsRouter);
 app.use("/api/workouts", workoutsRouter);
 app.use("/api/week", weekRouter);
+app.use("/api/month", monthRouter);
 
 app.use(errorLogger);
 
