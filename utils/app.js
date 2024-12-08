@@ -2,6 +2,8 @@ const express = require("express");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 // const cors = require("cors");
+const swaggerUi = require('swagger-ui-express');
+const specs = require('../services/swagger');
 
 const path = require('path');
 require("dotenv").config({path: path.join(__dirname, '../.env')});
@@ -13,6 +15,7 @@ const usersRouter = require("../routes/users");
 const shoesRouter = require("../routes/shoes");
 const weightsRouter = require("../routes/weights");
 const workoutsRouter = require("../routes/workouts");
+const weekRouter = require("../routes/week");
 
 const homeRouter = require('../routes/home');
 
@@ -35,6 +38,11 @@ app.use(cookieParser());
 
 app.use(helmet());
 
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs, { 
+    explorer: true,
+    groupingApiBy: ['tag']
+}));
+
 app.post("/api/login", createToken);
 app.get("/api/logout", deleteToken);
 
@@ -49,6 +57,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/shoes", shoesRouter);
 app.use("/api/weights", weightsRouter);
 app.use("/api/workouts", workoutsRouter);
+app.use("/api/week", weekRouter);
 
 app.use(errorLogger);
 

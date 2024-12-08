@@ -1,5 +1,5 @@
 <a id="readme-top"></a>
-# Training Log for Running Club 
+# Training Log for a Running Club 
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -23,10 +23,10 @@ Technologies/libraries/packages used:
 * Jsonwebtoken - to securely transmit tokens.
 * Cors - to control access to resources on different domains.
 * Dotenv -to store and access securely app parameters, API keys, passwords.
+* Swagger - API documentation
 
 TODO:
 * Jest - testing
-* Swagger - documentation
 * express-rate-limit - rate limit control
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -69,16 +69,17 @@ You can run the application in two ways:
 
 ## Functionality
 
-### API Functionality
+### API Functionality and Entry-Points
 API interface - CRUD operations for:
-* Users
-* Workouts
+* `/api/users/` - Users
+* `/api/workouts/` - Workouts
 * Starts - TODO
-* Running shoes statistics 
+* `/api/shoes/` - Running shoes statistics
+Follow detailed API documentation at `/api/docs/` for more details.
 
 ### WWW Functionality
 HTML interface:
-* Users - Login, Logout, Registration
+* Users - Login, Logout, Registration - TODO
 * Show workout statistics:
     ** Daily
     ** Weekly

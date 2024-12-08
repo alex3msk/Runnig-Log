@@ -128,10 +128,6 @@ function drawPieChart(d0, d1, d2, d3) {
     optionsPie = {
       responsive: true,
       maintainAspectRatio: false,
-      // title: {
-      //   display: true,
-      //   text: 'Load Levels',
-      // }
     };
 
     configPie = {

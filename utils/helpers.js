@@ -44,6 +44,10 @@ function getWeekDates(input) {
 function getWeekLastDay(input) {
     const year = parseInt(input.substr(0, 4));
     const week = parseInt(input.substr(4, 2));
+    // verify input data
+    if ( !year || !week || week > 53 || week < 1 || year < 2000 ) {
+        return null;
+    }
     // 1st day of the year + offset
     const date = new Date(year, 0, 1 + (week - 1) * 7);
     // get week's Saturday

@@ -7,6 +7,7 @@ const path = require('path');
 require("dotenv").config({path: path.join(__dirname, '../.env')});
 const secretKey = process.env.SECRET_KEY;
 
+
 // user login
 // create token, store it in cookie
 const createToken = async (req, res, next) => {
