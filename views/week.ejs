@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('layouts/header'); -%>
+
+ <body id="reportsPage">
+    <div class="" id="home">
+        <div class="container">
+            <%- include('layouts/menu'); -%>
+            <!-- row -->
+            <div class="row tm-content-row tm-mt-big">
+                <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+                    <div class="bg-white tm-block h-100">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-12">
+                                <h2 class="tm-block-title d-inline-block">Weekly Training Statistics</h2>
+                            </div>
+                            <div class="col-md-4 col-sm-12 text-right">
+                                <h2 class="tm-block-title d-inline-block">Today: <%= helpers.formatDate(Date()) %></h2>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                                <thead>
+                                    <tr class="tm-bg-gray">
+                                        <th scope="col" class="text-center">Week, last day</th>
+                                        <th scope="col" class="text-center">Runs</th>
+                                        <th scope="col" class="text-center">Time</th>
+                                        <th scope="col" class="text-center">Dist, km</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (var i = 0; i < wtotals.length; i++){ %>
+                                    <tr>
+                                        <td class="text-center"><%= helpers.getWeekLastDay(wtotals[i].dataValues.wnum) %></td>
+                                        <td class="text-center"><%= wtotals[i].dataValues.runsTotal %></td>
+                                        <td class="text-center"><%= helpers.timeStr(wtotals[i].dataValues.timeTotal) %></td>
+                                        <td class="text-center"><%= wtotals[i].dataValues.distTotal.toFixed(1) %></td>
+                                    </tr>
+                                    <%}%>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tm-table-mt tm-table-actions-row">
+                            <div class="tm-table-actions-col-left">
+                                &nbsp;
+                            </div>
+                            <div class="tm-table-actions-col-right">
+                                <span class="tm-pagination-label">Week: </span>
+                                <nav aria-label="Page navigation" class="d-inline-block">
+                                    <ul class="pagination tm-pagination">
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <span class="tm-dots d-block">...</span>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">13</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">14</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+                    <div class="bg-white tm-block h-100">
+                            <!--
+                        <div>
+                            <h2 class="tm-block-title d-inline-block">Weekly milage diagram</h2>
+                            <table class="table table-hover table-striped mt-3">
+                                <tbody>
+                                    <tr>
+                                        <td>Low: <%= levels[0] %></td>
+                                        <td>Moderate: <%= levels[1] %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>High: <%= levels[2] %></td>
+                                        <td>Undefined: <%= levels[3] %></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                            -->
+                        <div class="bg-white">
+                            <h2 class="tm-block-title">Weekly Milage Graph</h2>
+                            <canvas id="barChart" ></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <%- include('layouts/footer'); -%>
+    <script>
+        let //ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie;
+            // pieChart;
+            // let d0= <%= levels[0] %>
+            // let d1= <%= levels[1] %>
+            // let d2= <%= levels[2] %>
+            // let d3= <%= levels[3] %>
+            //let arr = <%= levels %>;
+        // DOM is ready
+        $(function () {
+            updateChartOptions();
+            // drawLineChart(); // Line Chart
+            drawBarChart(); // Bar Chart
+            // drawPieChart(d0, d1, d2, d3); // Pie Chart
+
+            $(window).resize(function () {
+                updateChartOptions();
+                //updateLineChart();
+                updateBarChart();
+                reloadPage();
+            });
+        })
+    </script>
+</body>
+</html>

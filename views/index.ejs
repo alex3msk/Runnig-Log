@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('layouts/header'); -%>
+
+ <body id="reportsPage">
+    <div class="" id="home">
+        <div class="container">
+            <%- include('layouts/menu'); -%>
+            <!-- row -->
+            <div class="row tm-content-row tm-mt-big">
+                <div class="tm-col tm-col-big">
+                    <div class="bg-white tm-block h-100">
+                        <h2 class="tm-block-title">Last Run</h2>
+                        <p>Date: <%= helpers.formatDate(last_run.wdate) %></p>
+                        <p>Time: <%= last_run.wtime %> min</p>
+                        <p>Distance: <%= last_run.distance.toFixed(1) %> km</p>
+                        <p><%= last_run.description %></p>
+                    </div>
+                </div>
+                <div class="tm-col tm-col-big">
+                  <div class="bg-white tm-block h-100">
+                    <h2 class="tm-block-title">This Week</h2>
+                    <p># of runs: <%= week_stat[0].totalCount %></p>
+                    <p>Total time: <%= week_stat[0].totalTime %> min</p>
+                    <p>Distance: <%= week_stat[0].totalDistance.toFixed(1) %> km</p>
+                  </div>
+                </div>
+                <div class="tm-col tm-col-small">
+                    <div class="bg-white tm-block h-100">
+                      <h2 class="tm-block-title">This Month</h2>
+                      <p># of runs: <%= month_stat[0].totalCount %></p>
+                      <p>Total time: <%= month_stat[0].totalTime %> min</p>
+                      <p>Distance: <%= month_stat[0].totalDistance.toFixed(1) %> km</p>
+                    </div>
+                </div>
+            </div>
+            <!-- row -->
+            <div class="row tm-mt-big">
+                <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12">
+                    <div class="bg-white tm-block">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="tm-block-title d-inline-block">Add New Workout</h2>
+                            </div>
+                        </div>
+                        <div class="row mt-4 tm-edit-product-row">
+                            <div class="col-xl-7 col-lg-7 col-md-12">
+                                <form action="" class="tm-edit-product-form">
+                                    <div class="input-group mb-3">
+                                        <label for="expire_date" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Date: </label>
+                                        <input id="wdate" name="expire_date" type="text" class="validate col-lg-8 col-md-8 col-sm-7"
+                                            data-large-mode="true">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <label for="wtime" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Time (min): </label>
+                                        <input id="name" name="name" type="text" class="validate col-lg-8 col-md-8 col-sm-7">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Distance (km): </label>
+                                        <input id="disrance" name="name" type="text" class="validate col-lg-8 col-md-8 col-sm-7">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <label for="description" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description: </label>
+                                        <textarea class="validate col-lg-8 col-md-8 col-sm-7" rows="4" required></textarea>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Load Level: </label>
+                                        <select class="custom-select col-lg-8 col-md-8 col-sm-7 bg-white" id="category">
+                                            <option selected>Select one</option>
+                                            <option value="1">Easy</option>
+                                            <option value="2">Moderate</option>
+                                            <option value="3">Heavy</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group mb-3">                                    <label for="stock" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Avg Pulse: </label>
+                                        <input id="stock" name="stock" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
+                                            <button type="submit" class="btn btn-primary">Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+               
+    <%- include('layouts/footer'); -%>
+    <script>
+        let ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie,
+            lineChart;
+        barChart, pieChart;
+        // DOM is ready
+        $(function () {
+            updateChartOptions();
+            drawBarChart(); // Bar Chart
+            drawPieChart(); // Pie Chart
+
+            $(window).resize(function () {
+                updateChartOptions();
+                updateBarChart();
+                reloadPage();
+            });
+        })
+    </script>
+</body>
+</html>
