@@ -68,27 +68,6 @@
                 <div class="col-xl-5 col-lg-12 tm-md-12 tm-sm-12 tm-col">
                     <div class="bg-white tm-block h-100">
                         <h2 class="tm-block-title d-inline-block">Month by Month, km</h2>
-                        <!--
-                        <div>
-                            <h2 class="tm-block-title d-inline-block">Weekly milage diagram</h2>
-                            <table class="table table-hover table-striped mt-3">
-                                <tbody>
-                                    <tr>
-                                        <td>Low: <%= milage[0] %></td>
-                                        <td>Moderate: <%= milage[1] %></td>
-                                    </tr>
-                                    <tr>
-                                        <td>High: <%= milage[2] %></td>
-                                        <td>Undefined: <%= milage[3] %></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                            -->
-                        <!--<div class="bg-white">
-                            <h2 class="tm-block-title">Weekly Milage Graph</h2>
-                            
-                        </div>-->
                         <canvas id="myChart" ></canvas>
                     </div>
                 </div>
@@ -102,10 +81,10 @@
         new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: <%- JSON.stringify(labels) %>, //['Red', 'Blue', 'Yellow', 'Green' , 'Purple', 'Orange'],
+            labels: <%- JSON.stringify(labels) %>, 
             datasets: [{
               label: 'km per Month',
-              data: <%= JSON.stringify(milage) %>, // [12, 19, 3, 5, 2, 3],
+              data: <%= JSON.stringify(milage) %>, 
               backgroundColor: [
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",

@@ -86,10 +86,13 @@ const updating = async (req, res, next) => {
   }
 };
 
-// delete User records
+// delete User record
 const deleting = async (req, res, next) => {
   try {
     const id = req.params.id;
+    // TODO:
+    // add check - cannot delete User if there are 
+    // any associated records in Workouts, Starts, Shoes tables
     const deleted = await User.destroy({ where: { id } });
     if (deleted === 0) {
       return next(new HttpError("User not found or deletion failed", 404));
@@ -100,74 +103,6 @@ const deleting = async (req, res, next) => {
   }
 };
 
-// get all User's Orders
-// const allOrdersUser = async (req, res, next) => {
-//   try {
-//     const userId = req.params.id;
-//     const orders = await Order.findAll({
-//       where: { userId },
-//       attributes: ["id", "date"],
-//       include: [
-//         {
-//           model: OrderItem,
-//           attributes: ["price", "count"],
-//           include: [
-//             {
-//               model: Stock,
-//               attributes: ["size"],
-//               include: [
-//                 {
-//                   model: Model,
-//                   attributes: ["name"],
-//                   include: [
-//                     {
-//                       model: Brand,
-//                       attributes: ["name"]
-//                     }
-//                   ]
-//                 }
-//               ]
-//             }
-//           ]
-//         }
-//       ]
-//     });
-
-//     if (!orders || orders.length === 0) {
-//       return next(new HttpError("No orders found for this user", 404));
-//     }
-
-//     // Calculate total sum for each order
-//     const orderHistory = orders.map(order => {
-//       let totalSum = 0;
-
-//       if (order.OrderItems) {
-//         totalSum = order.OrderItems.reduce((sum, item) => {
-//           return sum + item.price * item.count;
-//         }, 0);
-//       }
-
-//       // Include the total sum in each order
-//       return {
-//         id: order.id,
-//         date: order.date,
-//         totalSum,
-//         items: order.OrderItems.map(item => ({
-//           price: item.price,
-//           count: item.count,
-//           size: item.Stock.size,
-//           modelName: item.Stock.Model.name,
-//           brandName: item.Stock.Model.Brand.name
-//         }))
-//       };
-//     });
-
-//     res.status(200).json(orderHistory);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
 
 module.exports = {
   getting,
@@ -175,5 +110,4 @@ module.exports = {
   updating,
   deleting,
   creating,
-  //allOrdersUser,
 };

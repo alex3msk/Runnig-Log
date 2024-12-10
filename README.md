@@ -63,7 +63,7 @@ node ./index.js
 
 ## Usage
 You can run the application in two ways:
-* There is and html interface that can be accessed at `http://localhost:PORT/www/`
+* There is and HTML interface that can be accessed at `http://localhost:PORT/`
 * And there is API available at `http://localhost:PORT/api/`
 * For using ans API you need to login first.
 
@@ -81,11 +81,12 @@ Follow detailed API documentation at `/api/docs/` for more details.
 
 ### WWW Functionality
 HTML interface:
+* Main page - shows general info: last run, last week's and last month's statistics
 * Users - Login, Logout, Registration - TODO
 * Show workout statistics:
-    ** Daily
-    ** Weekly
-    ** Monthly
+    ** Daily - all runs for currwnt month
+    ** Weekly - statistics on workouts made during last 8 weeks
+    ** Monthly - statistics on workouts made during last 6 months
 * Running shoes statistics (milage) - TODO
 
 Optional:

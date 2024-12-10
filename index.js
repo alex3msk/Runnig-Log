@@ -25,6 +25,7 @@ program
 
 const options = program.opts();
 
+// init DB tables
 if ( options.init ) {
   console.log('Initializing database...');
   dbManager

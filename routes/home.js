@@ -7,6 +7,7 @@ const {
   } = require("../controllers/homeController")
 const router = express.Router();
 
+// HTML interface routes
 router.route("/").get(homepage);
 router.route("/index").get(homepage);
 router.route("/day").get(dailystat);

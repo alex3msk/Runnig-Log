@@ -1,5 +1,5 @@
 const express = require("express");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 // const cors = require("cors");
 const swaggerUi = require('swagger-ui-express');
@@ -30,6 +30,7 @@ app.use(cookieParser());
 //const PORT = process.env.PORT;
 //let corsOrigin = "127.0.0.1:" + PORT.toString();
 
+// -> turned off - not sure about deployment settings
 // app.use(
 //   cors({
 //     origin: corsOrigin,
@@ -37,7 +38,7 @@ app.use(cookieParser());
 //   })
 // );
 
-// app.use(helmet());
+// app.use(helmet()); // -> turned off - not sure about deployment settings
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs, { 
     explorer: true,
@@ -48,7 +49,7 @@ app.post("/api/login", createToken);
 app.get("/api/logout", deleteToken);
 
 // HTML routes
-app.use('/www', homeRouter)
+app.use('/', homeRouter)
 
 // Authentication
 app.use(checkToken);

@@ -3,7 +3,8 @@ const HttpError = require("../services/HttpError");
 const { Op, fn, col } = require('sequelize');
 
 
-// select OrderItem by Id
+// select Shoe by Id
+// and fetch Shoe milage stat from Workouts table
 const getting = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -25,7 +26,8 @@ const getting = async (req, res, next) => {
   }
 };
 
-// select all OrderItems for all Orders
+
+// select all Shoes
 const gettingAll = async (req, res, next) => {
   try {
     const shoes = await Shoe.findAll();
@@ -38,10 +40,12 @@ const gettingAll = async (req, res, next) => {
   }
 };
 
+
 // create a new Shoe record
 const creating = async (req, res, next) => {
   try {
     const { brand, model, size, price, purchased, firstuse, UserId } = req.body;
+    // enough data provided - ?
     if (!brand || !model || !size || !UserId) {
       return next(new HttpError("Not enough data for creating Shoe record", 400));
     }
@@ -71,6 +75,7 @@ const updating = async (req, res, next) => {
     const id = req.params.id;
     const { brand, model, size, price, purchased, firstuse, UserId } = req.body;
 
+    // enough data provided - ?
     if (!id || !brand || !model || !size || !UserId) {
       return next(new HttpError("Not enough data for updating Shoe record", 400));
     }
@@ -105,6 +110,7 @@ const deleting = async (req, res, next) => {
     const id = req.params.id;
 
     // check ShoeId in Workouts table
+    // cannot delete if there are any
     const wo = await Workout.findOne({ where: { ShoeId: id } });
     if ( wo ) {
       return res.status(500).json({ message: "Cannot delete Shoe record because it is associated with some workouts." });

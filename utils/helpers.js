@@ -1,4 +1,9 @@
-// date formatting 
+//************************************
+// utility and formatting functions
+// some of them used to format output in HTML pages
+//************************************
+
+// date formatting -> "Day, Mon YYYY"
 function formatDate(datestr) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let date = new Date(datestr);
@@ -7,6 +12,7 @@ function formatDate(datestr) {
     const year = date.getFullYear();
     return `${day}, ${month} ${year}`;
 }
+
 
 // returns "Mon, Year" string from "YYYYMM" input string
 function formatMonthYear(datestr) {
@@ -18,6 +24,7 @@ function formatMonthYear(datestr) {
     }
     return `${months[mon-1]}, ${year}`;
 }
+
 
 // returns "Mon" string from "YYYYMM" input string
 function getMonth(datestr) {

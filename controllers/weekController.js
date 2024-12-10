@@ -1,5 +1,3 @@
-const { Op, fn, col } = require('sequelize');
-const { Workout } = require("../models/index");
 const HttpError = require("../services/HttpError");
 const { PERIOD_DAY, PERIOD_WEEK, PERIOD_MONTH, dbGetStat, dbGetWorkouts } = require("../utils/utils");
 
@@ -10,7 +8,6 @@ const sequelize = require("../db/database");
 // get all run workouts made during a week
 const weekruns = async (req, res, next) => {
   try {
-    // const week = req.params.w;
     const { week } = req.body;
   
     // get first and last days of the week and verify date
@@ -39,7 +36,6 @@ const weekruns = async (req, res, next) => {
 // get weekly statistics of run workoutss
 const weeklystat = async (req, res, next) => {
   try {
-    // const week = req.params.w;
     const { week } = req.body;
   
     // get first and last days of the week and verify date
@@ -62,8 +58,7 @@ const weeklystat = async (req, res, next) => {
     }
     week_stat[0].firstDay = formatDate(dates.firstDay);
     week_stat[0].lastDay = formatDate(dates.lastDay);
-
-    console.log(week_stat);
+    // console.log(week_stat);
 
     res.status(201).json(week_stat[0]);
   } catch (err) {

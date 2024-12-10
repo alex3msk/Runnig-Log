@@ -1,12 +1,13 @@
 const { Op, fn, col } = require('sequelize');
 const { Workout } = require("../models/index");
-// const HttpError = require("../services/HttpError");
 
+// types of periods
 const PERIOD_DAY = 1;
 const PERIOD_WEEK = 2;
 const PERIOD_MONTH = 3;
 
-// Format the date to YYYY-MM-DD
+
+// Format the Date to YYYY-MM-DD
 const formatDate = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -15,6 +16,8 @@ const formatDate = (date) => {
 };
   
 
+// gets first day of the week by date value
+// and the first date of the next week - to be used in SELECT clause WHERE
 function getFirstLastDayOfWeek(dateString) {
     // Parse the input date string
     const date = new Date(dateString);
@@ -30,7 +33,9 @@ function getFirstLastDayOfWeek(dateString) {
       lastDay: formatDate(lastDay)
     };
 }
-  
+
+// get first days of the month by date value
+// and the first date of the next month - to be used in SELECT clause WHERE
 function getFirstLastDayOfMonth(dateString) {
     // Parse the input date string
     const date = new Date(dateString);
@@ -65,7 +70,6 @@ const dbGetStat = async (cur_date, period) => {
           [fn('SUM', col('wtime')), 'totalTime'],
           [fn('SUM', col('distance')), 'totalDistance']
         ],
-  //      group: ['wdate'],
         where: {
           wdate: {
             [Op.between]: [limits.firstDay, limits.lastDay]
@@ -103,9 +107,41 @@ const dbGetWorkouts = async (cur_date, period) => {
     return stat;
 }
 
+// get totals for each Load Level for the given period - WEEK or MONTH
+const dbGetRunLevels = async (cur_date, period) => {
+    let limits;
+    switch (period) {
+        case PERIOD_WEEK:
+            limits = getFirstLastDayOfWeek(cur_date);
+            break;
+        case PERIOD_MONTH:
+            limits = getFirstLastDayOfMonth(cur_date);
+            break;
+    };
+
+    // Sum milage for each Load Level for the period
+    const levels = await Workout.findAll({
+        attributes: [
+          'LoadLevelId',
+          [fn('SUM', col('distance')), 'distTotal'],
+          [fn('SUM', col('wtime')), 'timeTotal'],
+        ],
+        group: ['LoadLevelId'], 
+        where: {
+            wdate: {
+              [Op.between]: [limits.firstDay, limits.lastDay]
+            }
+          },
+        order: [['LoadLevelId', 'ASC'],],
+      });
+
+    return levels;
+}
+
 
 module.exports = {
     PERIOD_DAY, PERIOD_WEEK, PERIOD_MONTH, 
     dbGetStat,
     dbGetWorkouts,
+    dbGetRunLevels,
 };

@@ -2,10 +2,9 @@ const express = require("express");
 const {
   getting,
   gettingAll,
-//  updating,
+//  updating, - TODO
   deleting,
-//  creating,
-//  allOrdersUser,
+//  creating, - TODO
 } = require("../controllers/startsController");
 
 const router = express.Router();
@@ -13,5 +12,4 @@ const router = express.Router();
 router.route("/").get(gettingAll); //.post(creating);
 router.route("/:id").get(getting).delete(deleting); //.put(updating)
 
-//router.get("/:id/orders", allOrdersUser);
 module.exports = router;

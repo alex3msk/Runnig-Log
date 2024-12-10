@@ -5,7 +5,6 @@ const {
   updating,
   deleting,
   creating,
-//  allOrdersUser,
 } = require("../controllers/usersController");
 
 const router = express.Router();
@@ -39,6 +38,26 @@ const router = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         email:
+ *           type: string
+ *         password:
+ *           type: encripted string
+ *         dob:
+ *           type: date
+ */
+router.route("/").get(gettingAll).post(creating);
+
+/**
+ * @swagger
  * /api/users/{id}:
  *   get:
  *     summary: Get a specific User by ID
@@ -79,24 +98,7 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: String - message
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         name:
- *           type: string
- *         email:
- *           type: string
- *         password:
- *           type: encripted string
- *         dob:
- *           type: date
  */
-router.route("/").get(gettingAll).post(creating);
 router.route("/:id").get(getting).put(updating).delete(deleting);
 
-//router.get("/:id/orders", allOrdersUser);
 module.exports = router;

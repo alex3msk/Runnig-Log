@@ -1,5 +1,12 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 
+const path = require('path');
+require("dotenv").config({path: path.join(__dirname, '../.env')});
+
+const PORT = process.env.PORT;
+let swaggerUrl = "127.0.0.1:" + PORT.toString();
+
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -10,7 +17,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: swaggerUrl, // 'http://localhost:3000', 
         description: 'Development server',
       },
     ],

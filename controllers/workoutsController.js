@@ -4,6 +4,7 @@ const HttpError = require("../services/HttpError");
 
 
 // get Workout by its Id
+// fetch refernce data from linked tables/models - User name, Load Level name, Shoe model, WorkoutType name
 const getting = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -48,6 +49,7 @@ const gettingAll = async (req, res, next) => {
   }
 };
 
+
 // create a new Workout record
 const creating = async (req, res, next) => {
   try {
@@ -55,7 +57,7 @@ const creating = async (req, res, next) => {
       UserId, ShoeId, LoadLevelId, WorkoutTypeId } = req.body;
 
     console.log("Creating workout: ", wdate, description, distance, wtime, UserId);
-    // check required fields
+    // check min required fields
     if (!wdate || !description || !distance || !wtime || !UserId) {
       return next(new HttpError("Not enough data for creating workout", 400));
     }
@@ -186,6 +188,7 @@ const deleting = async (req, res, next) => {
     next(err);
   }
 };
+
 
 module.exports = {
   getting,

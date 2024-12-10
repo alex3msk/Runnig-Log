@@ -81,12 +81,12 @@
                             <table class="table table-hover table-striped mt-3">
                                 <tbody>
                                     <tr>
-                                        <td>Low: <%= levels[0] %></td>
-                                        <td>Moderate: <%= levels[1] %></td>
+                                        <td>Low: <%= levels[0].toFixed(1) %></td>
+                                        <td>Moderate: <%= levels[1].toFixed(1) %></td>
                                     </tr>
                                     <tr>
-                                        <td>High: <%= levels[2] %></td>
-                                        <td>Undefined: <%= levels[3] %></td>
+                                        <td>High: <%= levels[2].toFixed(1) %></td>
+                                        <td>Undefined: <%= levels[3].toFixed(1) %></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -102,23 +102,23 @@
             new Chart(ctx, {
               type: 'pie',
               data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green'], // , 'Purple', 'Orange'],
+                labels: ['Low', 'Moderate', 'High', 'Undefined'], 
                 datasets: [{
                   label: '# of Votes',
-                  data: <%= JSON.stringify(levels) %>, // [12, 19, 3, 5, 2, 3],
+                  data: <%= JSON.stringify(levels) %>, 
                   backgroundColor: [
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
-                    "rgba(255, 206, 86, 0.2)",
-                    "rgba(75, 192, 192, 0.2)",
                     "rgba(153, 102, 255, 0.2)",
                     "rgba(255, 159, 64, 0.2)"
                   ],
                   borderColor: [
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(255, 206, 86, 1)",
                     "rgba(255,99,132,1)",
                     "rgba(54, 162, 235, 1)",
-                    "rgba(255, 206, 86, 1)",
-                    "rgba(75, 192, 192, 1)",
                     "rgba(153, 102, 255, 1)",
                     "rgba(255, 159, 64, 1)"
                   ],

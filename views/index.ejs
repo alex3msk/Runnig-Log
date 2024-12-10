@@ -37,11 +37,11 @@
             </div>
             <!-- row -->
             <div class="row tm-mt-big">
-                <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12">
+                <div class="col-xl-7 col-lg-10 col-md-12 col-sm-12">
                     <div class="bg-white tm-block">
                         <div class="row">
                             <div class="col-12">
-                                <h2 class="tm-block-title d-inline-block">Add New Workout</h2>
+                                <h2 class="tm-block-title d-inline-block">Add New Workout - TODO</h2>
                             </div>
                         </div>
                         <div class="row mt-4 tm-edit-product-row">
@@ -78,7 +78,7 @@
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-                                            <button type="submit" class="btn btn-primary">Add
+                                            <button type="submit" class="btn btn-primary">Add (TODO)
                                             </button>
                                         </div>
                                     </div>
@@ -90,30 +90,5 @@
             </div> 
                
     <%- include('layouts/footer'); -%>
-    <script>
-        let ctxLine,
-            ctxBar,
-            ctxPie,
-            optionsLine,
-            optionsBar,
-            optionsPie,
-            configLine,
-            configBar,
-            configPie,
-            lineChart;
-        barChart, pieChart;
-        // DOM is ready
-        $(function () {
-            updateChartOptions();
-            drawBarChart(); // Bar Chart
-            drawPieChart(); // Pie Chart
-
-            $(window).resize(function () {
-                updateChartOptions();
-                updateBarChart();
-                reloadPage();
-            });
-        })
-    </script>
 </body>
 </html>

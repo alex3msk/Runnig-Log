@@ -39,6 +39,7 @@ const router = express.Router();
  *           type: integer
  */
 router.route("/").get(weekruns);
+
 /**
  * @swagger
  * /api/week/total:
