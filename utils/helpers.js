@@ -8,6 +8,27 @@ function formatDate(datestr) {
     return `${day}, ${month} ${year}`;
 }
 
+// returns "Mon, Year" string from "YYYYMM" input string
+function formatMonthYear(datestr) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const year = parseInt(datestr.substr(0, 4));
+    const mon = parseInt(datestr.substr(4, 2));
+    if ( !year || !mon || mon > 12 || mon < 1 || year < 2000 ) {
+        return datestr; 
+    }
+    return `${months[mon-1]}, ${year}`;
+}
+
+// returns "Mon" string from "YYYYMM" input string
+function getMonth(datestr) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const mon = parseInt(datestr.substr(4, 2));
+    if ( !mon || mon > 12 || mon < 1 ) {
+        return datestr; 
+    }
+    return `${months[mon-1]}`;
+}
+
 // calculate pace (time per 1 km) as string m:ss (min:sec) - based on total time and distance 
 function getPace(time, dist) {
     const tm_min = Math.floor(time/dist);
@@ -55,4 +76,5 @@ function getWeekLastDay(input) {
     return formatDate ( lastDay );
 }
 
-module.exports = { formatDate, getPace, timeStr, getWeekDates, getWeekLastDay }
+
+module.exports = { formatDate, getPace, timeStr, getWeekDates, getWeekLastDay, formatMonthYear, getMonth }

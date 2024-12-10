@@ -76,9 +76,8 @@
 
                 <div class="col-xl-4 col-lg-12 tm-md-12 tm-sm-12 tm-col">
                     <div class="bg-white tm-block h-100">
-                        <div>
                             <h2 class="tm-block-title d-inline-block">Training Load Levels</h2>
-
+                            <canvas id="pieChart" class="chartjs-render-monitor"></canvas>
                             <table class="table table-hover table-striped mt-3">
                                 <tbody>
                                     <tr>
@@ -91,45 +90,50 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="bg-white tm-block h-75">
-                            <canvas id="pieChart" class="chartjs-render-monitor"></canvas>
-                        </div>
                     </div>
                 </div>
             </div>
 
     <%- include('layouts/footer'); -%>
     <script>
-        let //ctxLine,
-            //ctxBar,
-            ctxPie,
-            optionsLine,
-            optionsBar,
-            optionsPie,
-            configLine,
-            configBar,
-            configPie,
-            pieChart;
-            let d0= <%= levels[0] %>
-            let d1= <%= levels[1] %>
-            let d2= <%= levels[2] %>
-            let d3= <%= levels[3] %>
-            //let arr = <%= levels %>;
-        // DOM is ready
-        $(function () {
-            updateChartOptions();
-            // drawLineChart(); // Line Chart
-            // drawBarChart(); // Bar Chart
-            drawPieChart(d0, d1, d2, d3); // Pie Chart
-
-            $(window).resize(function () {
-                updateChartOptions();
-                //updateLineChart();
-                //updateBarChart();
-                reloadPage();
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            
+            new Chart(ctx, {
+              type: 'pie',
+              data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green'], // , 'Purple', 'Orange'],
+                datasets: [{
+                  label: '# of Votes',
+                  data: <%= JSON.stringify(levels) %>, // [12, 19, 3, 5, 2, 3],
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 159, 64, 0.2)"
+                  ],
+                  borderColor: [
+                    "rgba(255,99,132,1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)"
+                  ],
+                  borderWidth: 1
+                }],
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
             });
-        })
-    </script>
+        });
+        </script>
 </body>
 </html>

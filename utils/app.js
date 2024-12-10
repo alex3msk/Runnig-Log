@@ -37,7 +37,7 @@ app.use(cookieParser());
 //   })
 // );
 
-app.use(helmet());
+// app.use(helmet());
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs, { 
     explorer: true,

@@ -13,7 +13,7 @@
                     <div class="bg-white tm-block h-100">
                         <div class="row">
                             <div class="col-md-8 col-sm-12">
-                                <h2 class="tm-block-title d-inline-block">Weekly Training Statistics</h2>
+                                <h2 class="tm-block-title d-inline-block">Monthly Training Statistics</h2>
                             </div>
                             <div class="col-md-4 col-sm-12 text-right">
                                 <h2 class="tm-block-title d-inline-block">Today: <%= helpers.formatDate(Date()) %></h2>
@@ -23,19 +23,19 @@
                             <table class="table table-hover table-striped tm-table-striped-even mt-3">
                                 <thead>
                                     <tr class="tm-bg-gray">
-                                        <th scope="col" class="text-center">Week, last day</th>
+                                        <th scope="col" class="text-center">Month</th>
                                         <th scope="col" class="text-center">Runs</th>
                                         <th scope="col" class="text-center">Time</th>
                                         <th scope="col" class="text-center">Dist, km</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% for (var i = 0; i < wtotals.length; i++){ %>
+                                    <% for (var i = 0; i < mtotals.length; i++){ %>
                                     <tr>
-                                        <td class="text-center"><%= helpers.getWeekLastDay(wtotals[i].dataValues.wnum) %></td>
-                                        <td class="text-center"><%= wtotals[i].dataValues.runsTotal %></td>
-                                        <td class="text-center"><%= helpers.timeStr(wtotals[i].dataValues.timeTotal) %></td>
-                                        <td class="text-center"><%= wtotals[i].dataValues.distTotal.toFixed(1) %></td>
+                                        <td class="text-center"><%= helpers.formatMonthYear(mtotals[i].dataValues.mnum) %></td>
+                                        <td class="text-center"><%= mtotals[i].dataValues.runsTotal %></td>
+                                        <td class="text-center"><%= helpers.timeStr(mtotals[i].dataValues.timeTotal) %></td>
+                                        <td class="text-center"><%= mtotals[i].dataValues.distTotal.toFixed(1) %></td>
                                     </tr>
                                     <%}%>
                                 </tbody>
@@ -47,7 +47,7 @@
                                 &nbsp;
                             </div>
                             <div class="tm-table-actions-col-right">
-                                <span class="tm-pagination-label">Week: </span>
+                                <span class="tm-pagination-label">Month: </span>
                                 <nav aria-label="Page navigation" class="d-inline-block">
                                     <ul class="pagination tm-pagination">
                                         <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -67,19 +67,19 @@
 
                 <div class="col-xl-5 col-lg-12 tm-md-12 tm-sm-12 tm-col">
                     <div class="bg-white tm-block h-100">
-                        <h2 class="tm-block-title d-inline-block">Weekly milage diagram</h2>
+                        <h2 class="tm-block-title d-inline-block">Month by Month, km</h2>
                         <!--
                         <div>
                             <h2 class="tm-block-title d-inline-block">Weekly milage diagram</h2>
                             <table class="table table-hover table-striped mt-3">
                                 <tbody>
                                     <tr>
-                                        <td>Low: <%= labels[0] %></td>
-                                        <td>Moderate: <%= labels[1] %></td>
+                                        <td>Low: <%= milage[0] %></td>
+                                        <td>Moderate: <%= milage[1] %></td>
                                     </tr>
                                     <tr>
-                                        <td>High: <%= labels[2] %></td>
-                                        <td>Undefined: <%= labels[3] %></td>
+                                        <td>High: <%= milage[2] %></td>
+                                        <td>Undefined: <%= milage[3] %></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -96,36 +96,45 @@
 
     <%- include('layouts/footer'); -%>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('myChart').getContext('2d');
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                labels: <%- JSON.stringify(labels) %>, 
-                datasets: [{
-                    label: 'km per Week',
-                    data: <%= JSON.stringify(milage) %>,
-                    fill: false,
-                    borderColor: "rgb(75, 192, 192)",
-                    lineTension: 0.1
-                }],
-                },
-                options: {
-                    scales: {
-                        yAxes: [
-                        {
-                            scaleLabel: {
-                            display: true,
-                            labelString: "km"
-                            }
-                        }
-                        ]
-                    }
-                }
-            });
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('myChart').getContext('2d');
         
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: <%- JSON.stringify(labels) %>, //['Red', 'Blue', 'Yellow', 'Green' , 'Purple', 'Orange'],
+            datasets: [{
+              label: 'km per Month',
+              data: <%= JSON.stringify(milage) %>, // [12, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)"
+              ],
+              borderColor: [
+                "rgba(255,99,132,1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)"
+              ],
+              borderWidth: 1
+            }],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    });
+    </script>
+    
 </body>
 </html>

@@ -21,16 +21,6 @@ const homepage = async (req, res, next) => {
 
     // get current week stats
     let cur_date = new Date();
-    // let week = getFirstLastDayOfWeek(cur_date);
-  
-    // const last_week_runs = await Workout.findAll( {
-    //   where: {
-    //     wdate: {
-    //       [Op.between]: [week.firstDay, week.lastDay]
-    //     }
-    //   }
-    // });
-
     const week_stat = await dbGetStat(cur_date, PERIOD_WEEK); // (cur_date);
 
     if (!week_stat) {
@@ -110,14 +100,27 @@ const weeklystat = async (req, res, next) => {
 //        [col('MAX(wdate)'), 'maxwdate']
       ],
       group: ['wnum'], 
-  //    order: [['maxdate', 'ASC']]
+      offset: 0,
+      limit: 8,
+      order: [[sequelize.fn('max', sequelize.col('wdate')), 'DESC'],]
     });
-    console.log(wtotals);
+    // console.log(wtotals);
 
-    let levels = [3200, 1600, 800, 400]; // temporary test data
+    // prepare labels and milage values for graph
+    let labels = new Array();
+    let milage = new Array();
+    const len = wtotals.length;
+    for (let i=0; i < len; ++i) {
+      let wlast = helpers.getWeekLastDay(wtotals[i].dataValues.wnum);
+      labels[len-i-1] = wlast.substr(0, wlast.length-5);
+      milage[len-i-1] = wtotals[i].dataValues.distTotal;
+    }
+    // console.log("Labels: ", labels);
+    // console.log("Milage: ", milage);
+
     // main page 
     res.render('week',{
-      wtotals, helpers, levels
+      wtotals, helpers, labels, milage
     });
 
   } catch (err) {
@@ -126,104 +129,52 @@ const weeklystat = async (req, res, next) => {
 };
 
 
-// TEMP - show test page with differents tests and interface elements
-const mainpage = async (req, res, next) => {
+// show weekly statistics page
+// week totals + bar diagram
+const monthlystat = async (req, res, next) => {
   try {
-      // get all runs
-    //   const runs = await Workout.findAll( {
-    //   order: ['id']
-    // });
-    
+    // get last run
+    const mtotals = await Workout.findAll({
+    //const wtotals = await Workout.findAndCountAll({
+      attributes: [
+        [fn('strftime', '%Y%m', col('wdate')), 'mnum'],
+        [fn('SUM', col('distance')), 'distTotal'],
+        [fn('SUM', col('wtime')), 'timeTotal'],
+        [fn('COUNT', '*'), 'runsTotal'],
+//        [col('MAX(wdate)'), 'maxwdate']
+      ],
+      group: ['mnum'], 
+      offset: 0,
+      limit: 6,
+      order: [[sequelize.fn('max', sequelize.col('wdate')), 'DESC'],]
+    });
+    console.log(mtotals);
+
+    // prepare labels and milage values for chart
+    let labels = new Array();
+    let milage = new Array();
+    const len = mtotals.length;
+    for (let i=0; i < len; ++i) {
+      labels[len-i-1] = helpers.getMonth(mtotals[i].dataValues.mnum);
+      milage[len-i-1] = mtotals[i].dataValues.distTotal;
+    }
+    //const lbls = JSON.stringify(labels).replaceAll(`\"`, "\'");;
+    console.log("Labels: ", labels);
+    console.log("Milage: ", milage);
     // main page 
-    res.render('main');
+    res.render('month',{
+      mtotals, helpers, labels, milage
+    });
 
   } catch (err) {
     next(err);
   }
 };
 
-// const getModelsByBrand = async (req, res, next) => {
-//   try {
-//       // get all Brands
-//       const brands = await Brand.findAll( {
-//       order: ['id']
-//     });
-//     if (!brands || brands.length === 0) {
-//       return next(new HttpError("No brands found", 404));
-//     }
-
-//     // count the nymber of models for each brand
-//     let models = await Model.findAll({
-//       attributes: [
-//         'BrandId',
-//         [sequelize.fn('COUNT'), 'numModels']
-//       ],
-//       group: ['BrandId'],
-//       order: ['BrandId']
-//     });
-    
-//     // insert 0 models count for brands without any models in database
-//     let j=0;
-//     let num_models = [];
-//     for (let k=0; k< brands.length; ++k) {
-//       if ( j >= models.length || brands[k].id < models[j].BrandId ) {
-//         num_models.push(0);
-//       }
-//       else if ( brands[k].id === models[j].BrandId ) {
-//         num_models.push(models[j].dataValues.numModels);
-//         ++j;
-//       }
-//     }
-
-//     // get all models for selected brand
-//     models = await Model.findAll({ where: { BrandId: req.params.id } });
-//     if (!models || models.length === 0) {
-//       return next(new HttpError("No brand models found", 404));
-//     }
-
-//     res.render('index',{
-//       brands, num_models, models
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-
-// const getModelById = async (req, res, next) => {
-//   try {
-//     // get model by Id
-//     const model_id = req.params.id;
-//     const models = await Model.findAll({
-//       where: { id: model_id },
-//       include: [{
-//           model: Brand,
-//           attributes: ["name"]
-//         },
-//       ]
-//     });
-//     if ( models.length === 0 ) {
-//       return next(new HttpError("Couldn't find model", 404));
-//     };
-//     const model = models[0];
-
-//     // get availables sizes for given Model from Stock
-//     const modelSizes = await Stock.findAll({
-//       where: { ModelId: model_id },
-//       order: ['size']
-//     });
-
-//     res.render('model', {
-//       model, modelSizes
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
 
 module.exports = {
     homepage,
-    mainpage,
     dailystat,
     weeklystat,
+    monthlystat
 };

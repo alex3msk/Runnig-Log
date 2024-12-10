@@ -7,6 +7,41 @@ const { formatDate, timeStr } = require('../utils/helpers');
 
 const sequelize = require("../db/database");
 
+// get month statistics of run workoutss
+const monthruns = async (req, res, next) => {
+  try {
+    const { month } = req.body;
+  
+    // get first and last days of the month and verify date
+    const year = parseInt(month.substr(0, 4));
+    const mon = parseInt(month.substr(4, 2));
+    if ( !year || !mon || mon > 12 || mon < 1 || year < 2000 ) {
+        return next(new HttpError("Invalid date format. Use 'YYYYMM' format.", 404)); 
+    }
+
+    // get 1st day of the month
+    const firstDay = new Date(year, mon - 1, 1);
+    // get last day of the month
+    const lastDay = new Date(year, mon, 0);
+
+    // get current month stats
+    let month_wo = await dbGetWorkouts(firstDay, PERIOD_MONTH); 
+    if ( !month_wo.length ) {
+      month_wo = new Array ({
+        firstDay: formatDate(firstDay),
+        lastDay: formatDate(lastDay),
+        result: "0 workouts made in the month."
+      });
+
+    }
+    // console.log(month_wo);
+
+    res.status(201).json(month_wo);
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 // get month statistics of run workoutss
 const monthlystat = async (req, res, next) => {
@@ -21,9 +56,9 @@ const monthlystat = async (req, res, next) => {
     }
 
     // get 1st day of the month
-    const firstDay = new Date(year, 0 + mon, 1);
+    const firstDay = new Date(year, mon - 1, 1);
     // get last day of the month
-    const lastDay = new Date(year, 1 + mon, 0);
+    const lastDay = new Date(year, mon, 0);
 
     // get current month stats
     const month_stat = await dbGetStat(firstDay, PERIOD_MONTH); 
@@ -50,4 +85,4 @@ const monthlystat = async (req, res, next) => {
 };
 
 
-module.exports = { monthlystat };
+module.exports = { monthruns, monthlystat };
