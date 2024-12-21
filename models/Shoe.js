@@ -25,6 +25,14 @@ const Shoe = sequelize.define("Shoe", {
     type: DataTypes.DATE,
     defaultValue: null,
   },
+  photo: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    len: {
+      args: [5, 32],
+      msg: "Image filename must be between 5 and 32 characters long",
+    },
+  },
 });
 
 module.exports = Shoe;

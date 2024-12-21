@@ -13,14 +13,14 @@ const { User, Workout, Shoe, Start, Weight, WorkoutType, LoadLevel } = require("
 //***********************************
 const initTables = async () => {
     // create Users
-    let newPassword = await bcrypt.hash("easypassword", saltRounds);
+    let newPassword = await bcrypt.hash("1234qwerty", saltRounds);
     const user1 = await User.create({
         name: "John Smith",
         email: "johnsmith@gmail.com",
         password: newPassword, 
         dob: "1985-10-01",
     });
-    newPassword = await bcrypt.hash("peterpenpassword", saltRounds);
+    newPassword = await bcrypt.hash("1234qwerty", saltRounds);
     await User.create({
         name: "Peter Pen",
         email: "peterpen@yahoo.com",
@@ -56,28 +56,41 @@ const initTables = async () => {
     // create shoes
     const shoe1 = await Shoe.create({
         brand: "Nike",
-        model: "Vomero 14",
-        size: "US 11",
+        model: "Vomero 17",
+        size: "US 10.5",
         price: 100,
         purchased: "2024-04-10",
         firstuse: "2024-05-01",
+        photo: "nike-vomero-17.jpg",
     });
     const shoe2 = await Shoe.create({
         brand: "Nike",
         model: "Pegasus 41",
-        size: "US 11",
+        size: "US 10.5",
         price: 90,
         purchased: "2024-03-01",
         firstuse: "2024-07-01",
+        photo: "nike-pegasus-41.jpg",
     });
     await Shoe.create({
         brand: "HOKA",
-        model: "Mach 5",
+        model: "Mach 6",
         size: "US 11",
         price: 100,
         purchased: "2024-03-01",
         firstuse: "2024-07-01",
+        photo: "hoka-mach-6.jpg",
     });
+    await Shoe.create({
+        brand: "HOKA",
+        model: "Ricket X2",
+        size: "US 11",
+        price: 180,
+        purchased: "2024-03-01",
+        firstuse: "2024-07-01",
+        photo: "hoka-rocket-x2.jpg",
+    });
+
 
     // create start
     // await Start.create( {

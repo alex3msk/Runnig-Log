@@ -22,6 +22,8 @@ const homeRouter = require('../routes/home');
 
 const app = express();
 
+// Add middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 

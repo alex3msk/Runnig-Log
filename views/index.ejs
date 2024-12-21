@@ -9,77 +9,164 @@
             <%- include('layouts/menu'); -%>
             <!-- row -->
             <div class="row tm-content-row tm-mt-big">
-                <div class="tm-col tm-col-big">
+                <div class="tm-col tm-col-medium">
                     <div class="bg-white tm-block h-100">
                         <h2 class="tm-block-title">Last Run</h2>
-                        <p>Date: <%= helpers.formatDate(last_run.wdate) %></p>
-                        <p>Time: <%= last_run.wtime %> min</p>
-                        <p>Distance: <%= last_run.distance.toFixed(1) %> km</p>
-                        <p><%= last_run.description %></p>
+                        <div class="row mt-3 tm-edit-product-row">
+                            <div class="col-xl-4 col-lg-7 col-md-12">
+                                <div class="input-group mb-3">
+                                    Date:
+                                </div>
+                                <div class="input-group mb-3">
+                                    Time:
+                                </div>
+                                <div class="input-group mb-3">
+                                    Distance:
+                                </div>
+                            </div>
+                            <div class="col-xl-7 col-lg-7 col-md-12">
+                                <div class="input-group mb-3">
+                                    <%= helpers.formatDate(last_run.wdate) %>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <%= last_run.wtime %> min
+                                </div>
+                                <div class="input-group mb-3">
+                                    <%= last_run.distance.toFixed(1) %> km
+                                </div>
+                                <div class="input-group mb-3">
+                                    <%= last_run.description %>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="tm-col tm-col-big">
+                <div class="tm-col tm-col-medium">
                   <div class="bg-white tm-block h-100">
                     <h2 class="tm-block-title">This Week</h2>
-                    <p># of runs: <%= week_stat[0].totalCount %></p>
-                    <p>Total time: <%= week_stat[0].totalTime %> min</p>
-                    <p>Distance: <%= week_stat[0].totalDistance.toFixed(1) %> km</p>
+                    <div class="row mt-3 tm-edit-product-row">
+                        <div class="col-xl-4 col-lg-7 col-md-12">
+                            <div class="input-group mb-3">
+                                Runs:
+                            </div>
+                            <div class="input-group mb-3">
+                                Total time:
+                            </div>
+                            <div class="input-group mb-3">
+                                Distance:
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-lg-7 col-md-12">
+                            <div class="input-group mb-3">
+                                <%= week_stat[0].totalCount %>
+                            </div>
+                            <div class="input-group mb-3">
+                                <%= week_stat[0].totalTime %> min
+                            </div>
+                            <div class="input-group mb-3">
+                                <%= week_stat[0].totalDistance.toFixed(1) %> km
+                            </div>
+                        </div>
+                    </div>
                   </div>
                 </div>
-                <div class="tm-col tm-col-small">
+                <div class="tm-col tm-col-medium">
                     <div class="bg-white tm-block h-100">
                       <h2 class="tm-block-title">This Month</h2>
-                      <p># of runs: <%= month_stat[0].totalCount %></p>
-                      <p>Total time: <%= month_stat[0].totalTime %> min</p>
-                      <p>Distance: <%= month_stat[0].totalDistance.toFixed(1) %> km</p>
+                      <div class="row mt-3 tm-edit-product-row">
+                            <div class="col-xl-4 col-lg-7 col-md-12">
+                                <div class="input-group mb-3">
+                                    Runs:
+                                </div>
+                                <div class="input-group mb-3">
+                                    Total time:
+                                </div>
+                                <div class="input-group mb-3">
+                                    Distance:
+                                </div>
+                            </div>
+                            <div class="col-xl-7 col-lg-7 col-md-12">
+                                <div class="input-group mb-3">
+                                    <%= month_stat[0].totalCount %>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <%= month_stat[0].totalTime %> min
+                                </div>
+                                <div class="input-group mb-3">
+                                    <%= month_stat[0].totalDistance.toFixed(1) %> km
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- row -->
             <div class="row tm-mt-big">
-                <div class="col-xl-7 col-lg-10 col-md-12 col-sm-12">
+                <div class="col-xl-5 col-lg-10 col-md-12 col-sm-12">
                     <div class="bg-white tm-block">
                         <div class="row">
                             <div class="col-12">
-                                <h2 class="tm-block-title d-inline-block">Add New Workout - TODO</h2>
+                                <h2 class="tm-block-title d-inline-block">Add New Workout</h2>
                             </div>
                         </div>
                         <div class="row mt-4 tm-edit-product-row">
-                            <div class="col-xl-7 col-lg-7 col-md-12">
-                                <form action="" class="tm-edit-product-form">
+                            <div class="col-xl-11 col-lg-7 col-md-12">
+                                <form action="/index" method="POST"> <!--</form> class="tm-edit-product-form"> -->
+                                    <% if ( msg != undefined && msg.length > 0 ) { %>
+                                    <div class="input-group mb-3">
+                                        <p style="color:red"><%=msg %></p>
+                                    </div>
+                                    <%}%>
                                     <div class="input-group mb-3">
                                         <label for="expire_date" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Date: </label>
-                                        <input id="wdate" name="expire_date" type="text" class="validate col-lg-8 col-md-8 col-sm-7"
-                                            data-large-mode="true">
+                                        <!-- <input id="wdate" name="wdate" type="text" class="validate col-lg-8 col-md-8 col-sm-7"
+                                            data-large-mode="true"> -->
+                                        <input id="wdate" name="wdate" class="flatpickr validate col-lg-8 col-md-8 col-sm-7" rows="4" required type=text placeholder="Select Date..">
                                     </div>
                                     <div class="input-group mb-3">
                                         <label for="wtime" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Time (min): </label>
-                                        <input id="name" name="name" type="text" class="validate col-lg-8 col-md-8 col-sm-7">
+                                        <input id="wtime" name="wtime" type="text" class="validate col-lg-8 col-md-8 col-sm-7" required>
                                     </div>
                                     <div class="input-group mb-3">
                                         <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Distance (km): </label>
-                                        <input id="disrance" name="name" type="text" class="validate col-lg-8 col-md-8 col-sm-7">
+                                        <input id="distance" name="distance" type="text" class="validate col-lg-8 col-md-8 col-sm-7" required>
                                     </div>
                                     <div class="input-group mb-3">
                                         <label for="description" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description: </label>
-                                        <textarea class="validate col-lg-8 col-md-8 col-sm-7" rows="4" required></textarea>
+                                        <textarea id="description" name="description" class="col-lg-8 col-md-8 col-sm-7" rows="4"></textarea>
                                     </div>
                                     <div class="input-group mb-3">
                                         <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Load Level: </label>
-                                        <select class="custom-select col-lg-8 col-md-8 col-sm-7 bg-white" id="category">
-                                            <option selected>Select one</option>
-                                            <option value="1">Easy</option>
+                                        <select id="loadlevel" name="loadlevel" class="custom-select col-lg-8 col-md-8 col-sm-7 bg-white">
+                                            <!-- <option selected>Select one</option> -->
+                                            <option value="1" selected>Easy</option>
                                             <option value="2">Moderate</option>
                                             <option value="3">Heavy</option>
                                         </select>
                                     </div>
-                                    <div class="input-group mb-3">                                    <label for="stock" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Avg Pulse: </label>
-                                        <input id="stock" name="stock" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7">
+                                    <div class="input-group mb-3">
+                                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Road/trail: </label>
+                                        <select id="wotype" name="wotype" class="custom-select col-lg-8 col-md-8 col-sm-7 bg-white">
+                                            <!-- <option selected>Select one</option> -->
+                                            <option value="1" selected>Road</option>
+                                            <option value="2">Trail</option>
+                                            <option value="3">Mixed</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Shoe used: </label>
+                                        <select id="shoe" name="shoe" class="custom-select col-lg-8 col-md-8 col-sm-7 bg-white">
+                                            <% for (var i = 0; i < shoes.length; i++) { %>
+                                                <option value="<%=shoes[i].id.toString()%>"><%= shoes[i].brand%> <%= shoes[i].model%></option>
+                                            <%}%>
+                                        </select>
+                                    </div>
+                                    <div class="input-group mb-3"><label for="stock" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Avg Pulse: </label>
+                                        <input id="avgpulse" name="avgpulse" type="text" class="col-lg-8 col-md-8 col-sm-7">
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-                                            <button type="submit" class="btn btn-primary">Add (TODO)
-                                            </button>
+                                            <button type="submit" id="saveWorkoutButton" class="btn btn-primary">Add New Workout</button>
                                         </div>
                                     </div>
                                 </form>
@@ -87,8 +174,94 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-7 col-lg-10 col-md-12 col-sm-12">
+                    <div class="bg-white tm-block">
+                        <div class="row">
+                            <div class="col-md-5 col-sm-12">
+                                <h2 class="tm-block-title d-inline-block">My Next Start</h2>
+                            </div>
+                            <div class="col-md-7 col-sm-12 text-right">
+                                <h2 class="tm-block-title d-inline-block" style="color:red">Tel Aviv Marathon : 28, Feb 2025</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p>Weeks to go: 10 -> 69 days left.</p>
+                            <p>Training milage progress for 14 weeks before the start:</p>
+                            <canvas id="myChart"></canvas>
+                            <p>
+                                <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">Distance, km</td>
+                                            <td class="text-center">Time</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">Average per week</td>
+                                            <td class="text-center">52</td>
+                                            <td class="text-center">4:45</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">Total</td>
+                                            <td class="text-center">426</td>
+                                            <td class="text-center">38:15</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div> 
                
     <%- include('layouts/footer'); -%>
+    <script>
+        $(document).ready(function() {
+        // Initialize flatpickr on the input
+        $('#wdate').flatpickr({
+            dateFormat: "Y/m/d",
+            allowInput: true
+        });
+
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: <%- JSON.stringify(labels) %>, 
+            datasets: [{
+              label: 'km per Month',
+              data: <%= JSON.stringify(milage) %>, 
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)"
+              ],
+              borderColor: [
+                "rgba(255,99,132,1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)"
+              ],
+              borderWidth: 1
+            }],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+    });
+    </script>
 </body>
 </html>

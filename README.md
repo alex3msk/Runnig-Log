@@ -87,7 +87,7 @@ HTML interface:
     ** Daily - all runs for currwnt month
     ** Weekly - statistics on workouts made during last 8 weeks
     ** Monthly - statistics on workouts made during last 6 months
-* Running shoes statistics (milage) - TODO
+* Running shoes statistics (milage)
 
 Optional:
 * Weight statistics (graph) - TODO

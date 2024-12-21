@@ -32,7 +32,7 @@ const gettingAll = async (req, res, next) => {
   try {
     const shoes = await Shoe.findAll();
     if (!shoes || shoes.length === 0) {
-      return next(new HttpError("No order shoes", 404));
+      return next(new HttpError("No Shoe records found", 404));
     }
     res.status(200).json(shoes);
   } catch (err) {
@@ -44,7 +44,7 @@ const gettingAll = async (req, res, next) => {
 // create a new Shoe record
 const creating = async (req, res, next) => {
   try {
-    const { brand, model, size, price, purchased, firstuse, UserId } = req.body;
+    const { brand, model, size, price, purchased, firstuse, photo, UserId } = req.body;
     // enough data provided - ?
     if (!brand || !model || !size || !UserId) {
       return next(new HttpError("Not enough data for creating Shoe record", 400));
@@ -58,7 +58,7 @@ const creating = async (req, res, next) => {
     const shoe = await Shoe.create({ 
       brand: brand, model: model, size: size, 
       price: price, purchased: purchased, 
-      firstuse: firstuse, UserId: UserId 
+      firstuse: firstuse, photo: photo, UserId: UserId 
     });
     if (!shoe) {
       return next(new HttpError("Problem creating Shoe record", 500));
@@ -73,7 +73,7 @@ const creating = async (req, res, next) => {
 const updating = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { brand, model, size, price, purchased, firstuse, UserId } = req.body;
+    const { brand, model, size, price, purchased, firstuse, photo, UserId } = req.body;
 
     // enough data provided - ?
     if (!id || !brand || !model || !size || !UserId) {
@@ -89,7 +89,7 @@ const updating = async (req, res, next) => {
     const [updated] = await Shoe.update({ 
         brand: brand, model: model, size: size, 
         price: price, purchased: purchased, 
-        firstuse: firstuse, UserId: UserId 
+        firstuse: firstuse, photo: photo, UserId: UserId 
       },
       {
         where: { id },

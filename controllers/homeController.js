@@ -3,7 +3,7 @@
 //************************************
 
 const { Op, fn, col } = require('sequelize');
-const { Workout } = require("../models/index");
+const { Workout, Shoe } = require("../models/index");
 const HttpError = require("../services/HttpError");
 const { PERIOD_DAY, PERIOD_WEEK, PERIOD_MONTH, dbGetStat, dbGetWorkouts, dbGetRunLevels } = require("../utils/utils");
 
@@ -17,6 +17,12 @@ const sequelize = require("../db/database");
 //************************************
 const homepage = async (req, res, next) => {
   try {
+    // if redirected after creating new Workout - set OK message
+    let msg = req.query.msg;
+    if ( msg === "OK" ) {
+      msg = "New Run/Workout added successfully!";
+    }
+
     // get last run/workout info
     const last_run = await Workout.findOne( {
         order: [['wdate', 'DESC']]
@@ -45,10 +51,62 @@ const homepage = async (req, res, next) => {
       month_stat[0].totalDistance = 0;
     }
     // console.log(month_stat);
+    
+    // select shoes for New Workout form
+    const shoes = await Shoe.findAll();
+    // if no data found (nulls) -> set to zero values
+    if (!shoes || shoes.length === 0) {
+      shoes[0].id = 0;
+      shoes[0].brand = "Unknown";
+      shoes[0].model = "";
+    }
+
+    // console.log("homepage: ", msg);
+    // get wekkly statistics of runs/workouts for last 8 weeks (TEMP)
+    // strftime('%Y%W', wdate) - uniquely identifies a week
+    const wtotals = await Workout.findAll({
+      attributes: [
+        [fn('strftime', '%Y%W', col('wdate')), 'wnum'],
+        [fn('SUM', col('distance')), 'distTotal'],
+        [fn('SUM', col('wtime')), 'timeTotal'],
+        [fn('COUNT', '*'), 'runsTotal'],
+      ],
+      group: ['wnum'], 
+      offset: 0,
+      limit: 8, // limit results to show to 8 last records
+      order: [[sequelize.fn('max', sequelize.col('wdate')), 'DESC'],]
+    });
+    // console.log(wtotals);
+
+    // prepare labels and milage values for graph
+    let labels = new Array();
+    let milage = new Array();
+    let len = wtotals.length;
+    for (let i=0; i < len; ++i) {
+      let wlast = helpers.getWeekLastDay(wtotals[i].dataValues.wnum);
+      labels[len-i-1] = wlast.substr(0, wlast.length-5);
+      milage[len-i-1] = wtotals[i].dataValues.distTotal;
+    }
+    // TEMP: add 6 more weeks
+    let weekdate = new Date(helpers.getWeekLastDay(wtotals[0].dataValues.wnum));
+    let cur_week;
+    len = len + 6;
+    for (let i=len-6; i < len; ++i) {
+      weekdate = new Date(weekdate.getFullYear(), weekdate.getMonth(), weekdate.getDate() + 7);
+      cur_week = helpers.formatDate(weekdate);
+      labels[i] = cur_week.substr(0, cur_week.length-5);
+      milage[i] = 0;
+    }
+    // console.log("Labels: ", labels);
+    // console.log("Milage: ", milage);
+
+    // TODO:
+    // calculate average and total disyance and time for the period
+    //
 
     // main page 
     res.render('index',{
-      last_run, week_stat, month_stat, helpers
+      last_run, week_stat, month_stat, helpers, msg, shoes, labels, milage,
     });
 
   } catch (err) {
@@ -209,9 +267,114 @@ const monthlystat = async (req, res, next) => {
 };
 
 
+//************************************
+// show shoes info and milage stistics 
+//************************************
+const shoespage = async (req, res, next) => {
+  try {
+    // get shoe info and milage statistics
+    const shoes = await Shoe.findAll({
+      include: [
+        {
+          model: Workout,
+          attributes: [
+            [fn('SUM', col('distance')), 'totalDistance']
+          ],
+        } ],
+        group: ['Shoe.id'], 
+        // offset: 0,
+        // limit: 6,
+        // order: [['purchased', 'DESC'],]
+    } );
+
+    // ORM retrieves data in confused format -> transform to several simple Arrays
+    // prepare labels and milage values for chart drawing
+    let labels = new Array();
+    let milage = new Array();
+    let purchased = new Array();
+    let images = new Array();
+    const len = shoes.length;
+    for (let i=0; i < len; ++i) {
+      labels[i] = shoes[i].brand + " " + shoes[i].model;
+      milage[i] = shoes[i].Workouts[0].dataValues.totalDistance;
+      purchased[i] = shoes[i].purchased;
+      images[i] = shoes[i].photo;
+    }
+    // console.log("Labels: ", labels);
+    // console.log("Milage: ", milage);
+    // console.log("Purchased: ", purchased);
+
+    // shoes info and stat page 
+    res.render('shoes',{
+      helpers, labels, milage, purchased, images
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+//************************************
+// render homepage
+// show last ran info, current week and current month statistics
+//************************************
+const addNewWorkout = async (req, res, next) => {
+  try {
+
+    let { wtime, wdate, distance, description, loadlevel, wotype, shoe, avgpulse } = req.body;
+
+    wdate = new Date(wdate);
+    console.log("ADDING NEW WORJOUT...");
+    console.log(req.body);
+    console.log("wdate = ", wdate);
+    console.log("wtime = ", wtime);
+    console.log("distance = ", distance);
+    console.log("description = ", description);
+    console.log("loadlevel = ", loadlevel);
+    console.log("wotype = ", wotype);
+    console.log("shoe = ", shoe);
+    console.log("avgpulse = ", avgpulse);
+
+    // validate data
+    let msg = "OK";
+    const today = new Date();
+    if ( !wdate || wtime <=0 || distance <= 0 || wdate > today ) {
+      msg = "Cannot save Run info - please, enter valid data.";
+    }
+    else {
+      // insert new Worjout record
+      const wo = await Workout.create({ 
+            wdate: wdate,
+            distance: distance,
+            wtime: wtime,
+            description: description,
+            height: 0,
+            avgpulse: avgpulse,
+            maxpulse: null,
+            UserId: 1,
+            ShoeId: shoe,
+            LoadLevelId: loadlevel,
+            WorkoutTypeId: wotype,
+      });
+      if ( !wo ) {
+        msg = "Error inserting Workout!";
+      };
+      // const msg = encodeURIComponent("This is my message to you!");
+    }
+    // main page 
+    res.redirect('/index?msg=' + msg);
+
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
     homepage,
     dailystat,
     weeklystat,
-    monthlystat
+    monthlystat,
+    shoespage,
+    addNewWorkout
 };

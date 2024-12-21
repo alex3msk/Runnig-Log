@@ -141,6 +141,10 @@ a:focus {
   width: 39%;
 }
 
+.tm-col-medium {
+  width: 32%;
+}
+
 .tm-col-small {
   width: 21.95%;
 }
